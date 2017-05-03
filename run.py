@@ -1,4 +1,7 @@
+#!/usr/bin/env python
+
 from   homepath import home_path
+from   save     import create_save_action
 import schedule
 from   rohdeschwarz.instruments.vna import Vna
 
@@ -12,5 +15,9 @@ vna_address     = '127.0.0.1'
 vna = Vna()
 vna.open_tcp(vna_address)
 
+# Create lamdba function.
+# Function will be called on interval
+action = create_save_action(vna, path)
+
 # run
-schedule.run(interval_min, duration_hr, vna, path)
+schedule.run(interval_min, duration_hr, action)

@@ -14,10 +14,13 @@ def get_ports(vna, channel):
 def create_save_action(vna, path):
 	mkpath(str(path))
 	def action():
-		timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+		now = datetime.now()
+		print(now)
+		timestamp = now.strftime('%Y%m%d_%H%M%S')
 		for i in vna.channels:
-			channel = vna.channel(i)
+			channel  = vna.channel(i)
 			filename = '{0}_ch{1}'.format(timestamp, i)
+			print('  Saving {0}'.format(filename))
 			filename = str(path / filename)
 			ports    = get_ports(vna, channel)
 			channel.save_measurement_locally(filename, ports)
