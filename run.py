@@ -5,7 +5,7 @@ from   save     import create_save_action
 import schedule
 from   rohdeschwarz.instruments.vna import Vna
 
-from pathlib import path
+from pathlib import Path
 
 # Settings:
 interval_min    = 60
