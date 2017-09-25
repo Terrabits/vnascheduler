@@ -5,15 +5,18 @@ from   save     import create_save_action
 import schedule
 from   rohdeschwarz.instruments.vna import Vna
 
+from pathlib import path
+
 # Settings:
 interval_min    = 60
 duration_hr     = 24 * 7
-path            = home_path() / 'Documents' / 'VnaScheduler'
+path            = Path('/your/path/here')
 vna_address     = '127.0.0.1'
 
 # Connect to VNA
 vna = Vna()
 vna.open_tcp(vna_address)
+vna.timeout_ms = 10*60*1000 # 10 mins
 
 # Create lamdba function.
 # Function will be called on interval
