@@ -5,9 +5,11 @@ from   distutils.dir_util import mkpath
 import re
 
 def print_saving(filename):
-    filename = filename[:17]
-    line = 'Saving {0}...'.format(filename)
-    print('  {0: <30}'.format(filename), end='')
+    if len(filename) > 17:
+        filename = filename[:17]
+        filename += '...'
+    line = 'Saving {0}'.format(filename)
+    print('  {0: <30}'.format(line), end='')
 
 def make_path_safe(s):
     return re.sub('[/\\\\:\\*\\?"<>|]', '~', s)
@@ -34,13 +36,19 @@ def create_save_action(vna, path):
         for i in vna.channels:
             channel  = vna.channel(i)
             filename = 'ch{1}'.format(timestamp, i)
-            print_saving(filename)
+            print_saving(filename + '.snp')
             filename = str(time_path / filename)
             ports    = get_ports(vna, channel)
             channel.save_measurement_locally(filename, ports)
             print('DONE')
         for t in vna.traces:
             trace = vna.trace(t)
+            filename = make_path_safe(trace.name)
+            filename = '{0}.csv'.format(filename)
+            print_saving(filename)
+            filename = time_path / filename
+            trace.save_data_locally(str(filename))
+            print('DONE')
             markers = trace.markers
             if markers:
                 filename = make_path_safe(trace.name)
@@ -62,8 +70,8 @@ def create_save_action(vna, path):
             diagram = vna.diagram(d)
             filename = diagram.title
             if not filename:
-                filename = 'Diagram{0}'.format(d)
-            print_saving(filename)
+                filename = 'Diagram{0}.jpg'.format(d)
+            print_saving(filename )
             filename = make_path_safe(filename)
             filename = time_path / filename
             diagram.save_screenshot_locally(str(filename))
