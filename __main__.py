@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-from   homepath import expand_home_path
-from   pathlib  import Path
-from   save     import create_save_action
-import schedule
+from   lib.homepath import expand_home_path
+from   lib.save     import create_save_action
+from   lib          import schedule
+from   pathlib      import Path
 from   rohdeschwarz.instruments.vna import Vna
-from   ruamel   import yaml
+from   ruamel       import yaml
 
 settings = {}
 with open('settings.yaml', 'r') as f:
