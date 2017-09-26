@@ -1,5 +1,5 @@
 from os.path import expanduser
 from pathlib import Path
 
-def home_path():
-	return Path(expanduser('~'))
+def expand_home_path(path):
+	return Path(expanduser(path))

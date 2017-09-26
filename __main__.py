@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from   homepath import home_path
+from   homepath import expand_home_path
 from   pathlib  import Path
 from   save     import create_save_action
 import schedule
@@ -18,7 +18,7 @@ vna.timeout_ms = 10*60*1000 # 10 mins
 
 # Create lamdba function.
 # Function will be called on interval
-path = Path(settings['path'])
+path = expand_home_path(settings['path'])
 action = create_save_action(vna, path)
 
 # run
