@@ -1,6 +1,9 @@
 from datetime           import datetime
 from distutils.dir_util import mkpath
 
+def make_path_safe(s):
+    return re.sub('[/\\\\:\\*\\?"<>|]', '~', s)
+
 def get_ports(vna, channel):
     result = []
     for t_name in channel.traces:
@@ -28,11 +31,17 @@ def create_save_action(vna, path):
 			channel.save_measurement_locally(filename, ports)
         for t in vna.traces:
             trace = vna.trace(t)
-            for m in trace.markers:
-                marker = trace.marker(m)
-                marker.name
-                marker.x
-                marker.y
+            if trace.markers:
+                filename = make_path_safe(trace.name)
+                filename = '{0}_markers.csv'.format(filename)
+                filename = path / filename
+                with open(str(filename), 'w') as f:
+                    for m in trace.markers:
+                        marker = trace.marker(m)
+                        marker.name
+                        marker.x
+                        marker.y
+                
             pass
         for d in vna.diagrams:
             # Save screenshot
