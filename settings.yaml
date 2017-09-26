@@ -1,0 +1,4 @@
+interval (mins): 60
+duration (hrs):  24*7
+path:            /home/results
+vna address:     127.0.0.1
