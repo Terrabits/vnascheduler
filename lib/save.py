@@ -4,6 +4,11 @@ from   datetime           import datetime
 from   distutils.dir_util import mkpath
 import re
 
+def print_saving(filename):
+    filename = filename[:17]
+    line = 'Saving {0}...'.format(filename)
+    print('  {0: <30}'.format(filename), end='')
+
 def make_path_safe(s):
     return re.sub('[/\\\\:\\*\\?"<>|]', '~', s)
 
@@ -21,7 +26,7 @@ def create_save_action(vna, path):
     mkpath(str(path))
     def action():
         now = datetime.now()
-        print(now)
+        print(now.strftime('%m/%d/%Y at %H:%M:%S'))
         timestamp = now.strftime('%Y%m%d_%H%M%S')
         mkpath(str(path / timestamp))
         time_path = path / timestamp
@@ -29,7 +34,7 @@ def create_save_action(vna, path):
         for i in vna.channels:
             channel  = vna.channel(i)
             filename = 'ch{1}'.format(timestamp, i)
-            print('  Saving {0}... '.format(filename), end='')
+            print_saving(filename)
             filename = str(time_path / filename)
             ports    = get_ports(vna, channel)
             channel.save_measurement_locally(filename, ports)
@@ -40,7 +45,7 @@ def create_save_action(vna, path):
             if markers:
                 filename = make_path_safe(trace.name)
                 filename = '{0}_markers.csv'.format(filename)
-                print('  Saving {0}... '.format(filename), end='')
+                print_saving(filename)
                 filename = time_path / filename
                 with open(str(filename), 'w') as f:
                     csvwriter = csv.writer(f)
@@ -58,7 +63,7 @@ def create_save_action(vna, path):
             filename = diagram.title
             if not filename:
                 filename = 'Diagram{0}'.format(d)
-            print('  Saving {0}... '.format(filename), end='')
+            print_saving(filename)
             filename = make_path_safe(filename)
             filename = time_path / filename
             diagram.save_screenshot_locally(str(filename))
